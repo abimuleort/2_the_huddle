@@ -1,10 +1,3 @@
-# CLASE Mapa:
-#     ATRIBUTOS:
-#         - filas: entero
-#         - columnas: entero
-#         - matriz: arreglo 2D
-#         - inicio: tupla (fila, columna)
-#         - fin: tupla (fila, columna)
 class Mapa():
     def __init__(self, filas, columnas):
         self.filas = filas
@@ -22,35 +15,37 @@ class Mapa():
     def MostrarMapa(self):
         for filas in self.mapa:
             print(*filas)
+    
+    def AgregarObstaculos(self):
+        if not (self.inicio and self.fin):
+            print("Error: Define inicio y fin para comenzar")
+            return False
+    
+        cantidad_agua = int(input("Ingrese la cantidad de obstagulos (Agua) desea agregar:  "))
+        cantidad_edificio = int(input("Ingrese la cantidad de obstagulos (Edificio) desea agregar:  "))
+        total_obstaculos = cantidad_agua + cantidad_edificio
+        celdas_disponibles = (self.filas * self.columnas) -2
 
-
+        if total_obstaculos >= celdas_disponibles:
+            print("Demasiados obstaculos para las dimensiones del mapa")
+            return False
         
-    
-#     MÉTODO __init__(filas, columnas, inicio, fin):
-#         1. Asignar filas y columnas
-#         2. Validar que inicio y fin estén dentro de los límites
-#         3. Crear matriz vacía de tamaño filas x columnas
-#         4. Inicializar todas las celdas con '.'
-#         5. Marcar posición inicio con 'I'
-#         6. Marcar posición fin con 'F'
-    
-#     MÉTODO mostrar_mapa():
-#         1. PARA cada fila EN matriz:
-#             2. Imprimir fila completa
-    
-#     MÉTODO validar_coordenadas(fila, columna):
-#         1. SI fila >= 0 Y fila < filas Y columna >= 0 Y columna < columnas:
-#             2. RETORNAR Verdadero
-#         3. SINO:
-#             4. RETORNAR Falso
+        for i in range (cantidad_agua -1):
+            if not self.ColocarObstaculoSeguro("~"):
+                print("No se pudo colocar obstaculo: Agua")
+                break
+        
+        for i in range (cantidad_edificio -1):
+            if not self.ColocarObstaculoSeguro("X"):
+                print("No se pudo colocar obstaculo: Edidicio")
+                break
+        return True
+        
+    def ColocarObstaculoSeguro(self, simbolo):
 
-# PROGRAMA PRINCIPAL:
-#     1. Solicitar al usuario número de filas
-#     2. Solicitar al usuario número de columnas
-#     3. Solicitar coordenadas de inicio (fila, columna)
-#     4. Solicitar coordenadas de fin (fila, columna)
-#     5. Crear objeto Mapa con los datos ingresados
-#     6. Mostrar el mapa en pantalla
+
+
+
 def main():
     filas = int(input("Cantidad de filas del mapa: "))
     columnas = int(input("Cantidad de columnas del mapa: "))
