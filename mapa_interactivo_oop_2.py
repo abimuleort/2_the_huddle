@@ -1,3 +1,5 @@
+import random
+
 class Mapa():
     def __init__(self, filas, columnas):
         self.filas = filas
@@ -42,8 +44,22 @@ class Mapa():
         return True
         
     def ColocarObstaculoSeguro(self, simbolo):
+        intentos = 0
+        max_intentos = (self.filas * self.columnas)*2
 
+        while intentos < max_intentos:
+            fila = random.radint(0, self.filas -1)
+            columna = random.radint(0, self.columnas -1)
+            if self.CeldaEsValida(fila, columna):
+                valor_anterior = self.mapa[fila][columna]
+                self.mapa[fila][columna] = simbolo
 
+                if self.ExisteCamino():
+                    return True
+                else:
+                    self.mapa[fila][columna] = valor_anterior
+            intentos = intentos + 1
+        return False    
 
 
 def main():
