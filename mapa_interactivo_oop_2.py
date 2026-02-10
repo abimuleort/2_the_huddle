@@ -60,6 +60,31 @@ class Mapa():
                     self.mapa[fila][columna] = valor_anterior
             intentos = intentos + 1
         return False    
+    
+    def CeldaEsValida(self, fila, columna):
+        if not self.ValidarCoord(fila, columna):
+            return False
+        if (fila, columna) == self.inicio:
+            return False
+        if (fila, columna) == self.fin:
+            return False
+        if self.mapa[fila][columna] != ".":
+            return False
+        return True
+
+class BuscadorDeRutas():
+    def __init__(mapa):
+        self.mapa = mapa
+        self.filas = filas
+        self.columnas = columnas
+    def ExisteCamino(self, inicio, fin):
+        camino = self.EncontrarCamino(inicio, fin)
+        if camino == None:
+            return False
+        else:
+            return True
+    def EncontrarCamino(self, inicio, fin):
+
 
 
 def main():
