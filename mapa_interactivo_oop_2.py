@@ -1,4 +1,6 @@
 import random
+import math
+import heapq
 
 class Mapa():
     def __init__(self, filas, columnas):
@@ -67,13 +69,13 @@ class Mapa():
         if (fila, columna) == self.inicio:
             return False
         if (fila, columna) == self.fin:
-            return False
+            return False 
         if self.mapa[fila][columna] != ".":
             return False
         return True
 
 class BuscadorDeRutas():
-    def __init__(mapa):
+    def __init__(self, mapa, filas, columnas):
         self.mapa = mapa
         self.filas = filas
         self.columnas = columnas
@@ -84,7 +86,24 @@ class BuscadorDeRutas():
         else:
             return True
     def EncontrarCamino(self, inicio, fin):
+        if inicio or fin == None:
+            return None 
+        
+        fila_inicio, col_inicio = inicio
+        fila_fin, col_fin = fin
 
+        filas = len(self.mapa)
+        columnas = len(self.mapa[0])
+        dist = {(i, j): math.inf
+                for i in range(filas)
+                for j in range(columnas)}
+
+        dist[inicio] = 0
+        padre = {}
+        visitados = []
+        
+        cola_prioridad = ColaPrioridad()
+        cola_prioridad.append((0, inicio) dist,)
 
 
 def main():

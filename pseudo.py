@@ -1,3 +1,5 @@
+
+
 """ CLASE Mapa:
     ATRIBUTOS:
         - filas: entero
@@ -346,3 +348,4 @@ CLASE Mapa:
         
         5. IMPRIMIR "Camino encontrado con", longitud(camino), "pasos"
         6. self.pathfinder.VisualizarCamino(camino)
+"""
