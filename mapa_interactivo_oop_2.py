@@ -1,4 +1,7 @@
 import random
+import math
+import heapq
+import copy 
 
 class Mapa():
     def __init__(self, filas, columnas):
@@ -60,7 +63,122 @@ class Mapa():
                     self.mapa[fila][columna] = valor_anterior
             intentos = intentos + 1
         return False    
+    
+    def CeldaEsValida(self, fila, columna):
+        if not self.ValidarCoord(fila, columna):
+            return False
+        if (fila, columna) == self.inicio:
+            return False
+        if (fila, columna) == self.fin:
+            return False 
+        if self.mapa[fila][columna] != ".":
+            return False
+        return True
 
+class BuscadorDeRutas():
+    def __init__(self, mapa, filas, columnas):
+        self.mapa = mapa
+        self.filas = filas
+        self.columnas = columnas
+
+    def ExisteCamino(self, inicio, fin):
+        camino = self.EncontrarCamino(inicio, fin)
+        if camino == None:
+            return False
+        else:
+            return True
+        
+    def EncontrarCamino(self, inicio, fin):
+        if inicio or fin == None:
+            return None 
+        
+        fila_inicio, col_inicio = inicio
+        fila_fin, col_fin = fin
+
+        filas = len(self.mapa)
+        columnas = len(self.mapa[0])
+        dist = {(i, j): math.inf
+                for i in range(filas)
+                for j in range(columnas)}
+
+        dist[inicio] = 0
+        padre = {}
+        visitados = []
+        cola_prioridad = ColaPrioiridad()
+        cola_prioridad.heapq.heappush((0, inicio))
+
+        # Algoritmo Dijkstra
+        while not cola_prioridad:
+            distancia_actual, posicion_actual = heapq.heappop(cola_prioridad)
+            if posicion_actual in visitados:
+                continue 
+            
+            visitados.append(posicion_actual)
+            
+            if posicion_actual == fin:
+                return self.ReconstruirCamino(padre, inicio, fin)
+            
+            vecinos = self.ObtenerVecinosTransitables(posicion_actual)
+
+            for vecino in vecinos:
+                costo_movimiento = self.ObenerCosto(vecino)
+                nueva_distancia = distancia_actual + costo_movimiento
+
+                if nueva_distancia < dist[vecino]:
+                    dist[vecino] = nueva_distancia
+                    padre[vecino] = posicion_actual
+                    heapq.heappush(cola_prioridad, (nueva_distancia, vecino))
+
+        return None
+    
+    def ObtenerVecinosTransitables(self, posicion):
+        fila, columna = posicion
+        vecinos = []
+        direcciones = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for df, dc in direcciones:
+            nueva_fila = fila + df
+            nueva_col = columna + dc
+
+            if self.ValidarCoord(nueva_fila, nueva_col):
+                celda = self.mapa.mapa[nueva_fila][nueva_col]
+
+                if celda in (".", "I", "S"):
+                    vecinos.append((nueva_fila, nueva_col))
+            return vecinos
+    
+    def ValidarCoord(self, fila, columna):
+        if 0 <= fila < self.filas and 0 <= columna < self.columnas:
+            return True 
+    
+    def ObtenerCosto(self, posicion):
+        return 1
+    
+    def ReconstruirCamino(self, padre, inicio, fin):
+        camino = []
+        actual = fin 
+
+        while actual != inicio:
+            if actual not in padre:
+                return None
+            actual = padre[actual]
+
+        camino.append[actual]
+        camino.reverse()
+        return camino
+    
+    def VisualizarCamino(self, camino):
+        if camino == None:
+            print("No hay camino disponible")
+            return
+        
+        mapa_copia = copy.deepcopy(self.mapa)
+
+        for fila, columna in camino:
+            if mapa_copia[fila][columna] not in ("I", "S"):
+                mapa_copia[fila][columna] = "*"
+        print(mapa_copia)
+
+        
 
 def main():
     filas = int(input("Cantidad de filas del mapa: "))
