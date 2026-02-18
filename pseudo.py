@@ -1,5 +1,7 @@
 
 
+
+
 """ CLASE Mapa:
     ATRIBUTOS:
         - filas: entero
@@ -142,7 +144,45 @@ CLASE PathFinder:
     
     
     MÉTODO ExisteCamino(inicio, fin):
+
+CLASE PathFinder:
+    '''
+    Clase separada para algoritmos de búsqueda de caminos
+    '''
+    
+    ATRIBUTOS:
+        - mapa: referencia al objeto Mapa
+        - filas: número de filas
+        - columnas: número de columnas
+    
+    
+    MÉTODO __init__(mapa):
         '''
+        Constructor que recibe el objeto Mapa
+        '''
+        1. self.mapa = mapa
+        2. self.filas = mapa.filas
+        3. self.columnas = mapa.columnas
+    
+    
+    MÉTODO ExisteCamino(inicio, fin):
+        '''
+        Verifica si existe un camino de inicio a fin usando Dijkstra
+        '''
+        1. camino = self.EncontrarCamino(inicio, fin)
+        2. SI camino es None:
+            3. RETORNAR False
+        4. SINO:
+            5. RETORNAR True
+    
+    
+    MÉTODO EncontrarCamino(inicio, fin):
+        '''
+        Encuentra el camino más corto usando el algoritmo de Dijkstra
+        Retorna: lista de coordenadas del camino, o None si no existe
+        '''
+        
+        # Validar entrada
         Verifica si existe un camino de inicio a fin usando Dijkstra
         '''
         1. camino = self.EncontrarCamino(inicio, fin)
@@ -161,10 +201,14 @@ CLASE PathFinder:
         # Validar entrada
         1. SI inicio es None O fin es None:
             2. RETORNAR None
+            2. RETORNAR None
         
         3. fila_inicio, col_inicio = inicio
         4. fila_fin, col_fin = fin
         
+        # Inicializar estructuras de Dijkstra
+        5. distancias = diccionario con todas las celdas → infinito
+        6. distancias[inicio] = 0
         # Inicializar estructuras de Dijkstra
         5. distancias = diccionario con todas las celdas → infinito
         6. distancias[inicio] = 0
@@ -174,7 +218,15 @@ CLASE PathFinder:
         
         9. cola_prioridad = nueva ColaPrioridad()
         10. cola_prioridad.agregar((0, inicio))  # (distancia, coordenada)
+        7. padres = diccionario vacío  # Para reconstruir el camino
+        8. visitados = conjunto vacío
         
+        9. cola_prioridad = nueva ColaPrioridad()
+        10. cola_prioridad.agregar((0, inicio))  # (distancia, coordenada)
+        
+        # Algoritmo de Dijkstra
+        11. MIENTRAS cola_prioridad NO está vacía:
+            12. distancia_actual, posicion_actual = cola_prioridad.extraer_minimo()
         # Algoritmo de Dijkstra
         11. MIENTRAS cola_prioridad NO está vacía:
             12. distancia_actual, posicion_actual = cola_prioridad.extraer_minimo()
